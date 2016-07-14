@@ -26,24 +26,33 @@ void setup() {
   
   doBlink(10, 100);
 
-  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, 100);
-  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_BACKWARDS, 100);
+  rotateLeft();
+  delay(3000);
+  rotateRight();
+  delay(3000);
 
-  delay (5000);
+  doBlink(3, 500);
 }
 
 // the loop function runs over and over again forever
 void loop() {
-  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, 100);
-  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 100);  
-  delay(3000);
-  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, 0);
-  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 0);  
-  doBlink(3, 100);
-  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_BACKWARDS, 100);
-  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 100);  
-  delay(1000);
+  moveForward();
+  doBlink(4,500);
+  stopMotors();
+  doBlink(3, 50);
+  moveBackwards();
+  doBlink(2,100);
+  rotateLeft();
+  doBlink(2, 250);
   
+  moveForward();
+  doBlink(3,500);
+  stopMotors();
+  doBlink(3, 50);
+  moveBackwards();
+  doBlink(2,100);
+  rotateRight();
+  doBlink(2, 250);
 }
 
 /* 
@@ -62,6 +71,30 @@ void setMotor(String motor, int motorDirection, int motorSpeed){
     digitalWrite(left_direction_pin, motorDirection);
     analogWrite(left_speed_pin, motorSpeed);
   }
+}
+
+void moveForward(){
+  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, 100);
+  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 100);  
+}
+
+void moveBackwards(){
+  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_BACKWARDS, 100);
+  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_BACKWARDS, 100);  
+}
+
+void rotateRight(){
+  setMotor(MOTOR_LEFT,  MOTOR_DIRECTION_FORWARD, 100);
+  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_BACKWARDS, 100);  
+}
+void rotateLeft(){
+  setMotor(MOTOR_LEFT,  MOTOR_DIRECTION_BACKWARDS, 100);
+  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 100);  
+}
+
+void stopMotors(){
+  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, 0);
+  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 0);  
 }
 
 //USE THIS AS HUMANCOMMUNICATION MECHANISM 
