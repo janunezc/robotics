@@ -9,33 +9,65 @@
 #define right_speed_pin       6
 #define left_direction_pin   10
 #define right_direction_pin  11
+#define proximity_echo        2
+#define proximity_trigger    12
 #define MOTOR_LEFT           "L"
 #define MOTOR_RIGHT          "R"
 #define MOTOR_DIRECTION_FORWARD  1
 #define MOTOR_DIRECTION_BACKWARDS 0
+#define FORWARD_TIME          10000
+#define TOO_CLOSE_DISTANCE    6
 
 // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize digital pin 13 as an output.
+  Serial.begin(9600);
+  while(!Serial){
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+
+  Serial.println("Setting pin modes...");
   pinMode(board_led, OUTPUT);
   pinMode(left_speed_pin, OUTPUT);
   pinMode(right_speed_pin, OUTPUT);
   pinMode(left_direction_pin, OUTPUT);
   pinMode(right_direction_pin, OUTPUT);
 
+  pinMode(proximity_trigger, OUTPUT);
+  pinMode(proximity_echo, INPUT);
   
+  Serial.println("Initial blink...");
   doBlink(10, 100);
 
   rotateLeft();
   delay(3000);
   rotateRight();
   doBlink(3, 500);
+  Serial.println("SETUP COMPLETE");
 }
 
+long limitMillis = 0;
+int distance = 0;
+int tooCloseDetected = 0;
 // the loop function runs over and over again forever
 void loop() {
+  limitMillis = millis() + FORWARD_TIME;
   moveForward();
-  doBlink(4,500);
+  
+  tooCloseDetected = 0;
+  Serial.println("waiting for FORWARD_TIME or TOO_CLOSE_DISTANCEx3");
+  while (millis() < limitMillis){
+    distance = getDistance();
+    if(distance < TOO_CLOSE_DISTANCE && distance > 0){
+      Serial.println("Too Close Detected!");
+      tooCloseDetected ++;
+      if(tooCloseDetected>=3) {
+        Serial.println("Too Close Detected 3 times!");
+        break;
+      }
+    }
+  }
+
   stopMotors();
   doBlink(3, 50);
   moveBackwards();
@@ -43,8 +75,23 @@ void loop() {
   rotateLeft();
   doBlink(2, 250);
   
+  limitMillis = millis() + FORWARD_TIME;
   moveForward();
-  doBlink(4,500);
+  
+  tooCloseDetected = 0;
+  Serial.println("waiting for FORWARD_TIME or TOO_CLOSE_DISTANCEx3");
+  while (millis() < limitMillis){
+    distance = getDistance();
+    if(distance < TOO_CLOSE_DISTANCE && distance > 0){
+      Serial.println("Too Close Detected!");
+      tooCloseDetected++ ;
+      if(tooCloseDetected>=3) {
+        Serial.println("Too Close Detected 3 times!");
+        break;
+      }
+    }
+  }
+   
   stopMotors();
   doBlink(3, 50);
   moveBackwards();
@@ -72,27 +119,42 @@ void setMotor(String motor, int motorDirection, int motorSpeed){
 }
 
 void moveForward(){
+  Serial.println("Moving FORWARD...");
   setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, 100);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 100);  
 }
 
 void moveBackwards(){
+  Serial.println("Moving BACKWARDS...");
   setMotor(MOTOR_LEFT, MOTOR_DIRECTION_BACKWARDS, 100);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_BACKWARDS, 100);  
 }
 
 void rotateRight(){
+  Serial.println("Rotating RIGHT...");
   setMotor(MOTOR_LEFT,  MOTOR_DIRECTION_FORWARD, 100);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_BACKWARDS, 100);  
 }
 void rotateLeft(){
+  Serial.println("Rotating LEFT...");
   setMotor(MOTOR_LEFT,  MOTOR_DIRECTION_BACKWARDS, 100);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 100);  
 }
 
 void stopMotors(){
+  Serial.println("STOPPING MOTORS...");
   setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, 0);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 0);  
+}
+
+// Returns proximity distance in CM
+int getDistance(){
+  digitalWrite(proximity_trigger, HIGH);
+  delay(15);
+  digitalWrite(proximity_trigger,LOW);
+  int duration = pulseIn(proximity_echo, HIGH);
+  int distance = (duration/2) / 29.1;  
+  return distance;
 }
 
 //USE THIS AS HUMANCOMMUNICATION MECHANISM 
