@@ -12,20 +12,20 @@ export class AboutPage {
     this['myrssi'] = [];  
     this['myCount'] = 0;
     
-    this['myrssi'].push( ": Ready! Calling ble.enable()")
+    this['myrssi'].push( "Ready! Calling ble.enable()")
     this['myCount']++;
     ble.enable();
     
-    this['myrssi'].push(": ble.enable() succeeded!");
+    this['myrssi'].push("ble.enable() succeeded!");
     this['myCount']++;
     setInterval(() => {
-      this['myrssi'].push(": Interval Called! ble.scan()...");
+      this['myrssi'].push("Interval Called! ble.scan()...");
       this['myCount']++;
       ble.scan([],500).subscribe(data=>{
-        this['myrssi'].push(": Scan Subscriber: " + data['name'] + ' | ' + data['rssi']);
+        this['myrssi'].push("Scan Subscriber: " + data['name'] + ' | ' + data['rssi']);
         this['myCount']++;
         if(data['name']=="Blynk"){
-          this['myrssi'].push(": Blynk Found!!!");
+          this['myrssi'].push("Blynk Found!!!");
           this['myCount']++;
         }
       });
