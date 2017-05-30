@@ -9,18 +9,24 @@ import { BLE } from '@ionic-native/ble';
 export class AboutPage {
 
   constructor(public navCtrl: NavController, private ble: BLE) {
-    this['myrssi'] = 'Trying ble.enable()';  
+    this['myrssi'] = [];  
+    this['myCount'] = 0;
     
+    this['myrssi'].push(myCount + ": Ready! Calling ble.enable()")
+    this['myCount']++;
     ble.enable();
     
-    this['myrssi'] += '<p>ble.enable() succeeded!</p>';
-    
+    this['myrssi'].push(myCount + ": ble.enable() succeeded!");
+    this['myCount']++;
     setInterval(() => {
-      this['myrssi'] += '<p> Interval! </p>';
+      this['myrssi'].push(myCount + ": Interval Called! ble.scan()...");
+      this['myCount']++;
       ble.scan([],500).subscribe(data=>{
-        this['myrssi'] += "<p>" + data['name'] + ' | ' + data['rssi'] + '</p>';
+        this['myrssi'].push(myCount + ": Scan Subscriber: " + data['name'] + ' | ' + data['rssi']);
+        this['myCount']++;
         if(data['name']=="Blynk"){
-          this['myrssi'] += "<p> Blynk FOUND!!!! </p>";
+          this['myrssi'].push(myCount + ": Blynk Found!!!");
+          this['myCount']++;
         }
       });
     },1000);

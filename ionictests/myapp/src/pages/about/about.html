@@ -7,7 +7,8 @@
 </ion-header>
 
 <ion-content padding>
-LETS IMAGINE RSSI IS HERE... <br />
+RSSI SCAN RESULTS: ({{myCount}})<br />
 <hr />
-RSSI (VER2):  {{myrssi}}
+<p *ngFor="let entry of myrssi">{{entry}}</p>
+
 </ion-content>

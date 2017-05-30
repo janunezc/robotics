@@ -55763,15 +55763,22 @@ var AboutPage = (function () {
         var _this = this;
         this.navCtrl = navCtrl;
         this.ble = ble;
-        this['myrssi'] = 'Trying ble.enable()';
+        this['myrssi'] = [];
+        this['myCount'] = 0;
+        this['myrssi'].push("Ready! Calling ble.enable()");
+        this['myCount']++;
         ble.enable();
-        this['myrssi'] += '<p>ble.enable() succeeded!</p>';
+        this['myrssi'].push("ble.enable() succeeded!</p>");
+        this['myCount']++;
         setInterval(function () {
-            _this['myrssi'] += '<p> Interval! </p>';
+            _this['myrssi'].push("Interval Called! ble.scan()...");
+            _this['myCount']++;
             ble.scan([], 500).subscribe(function (data) {
-                _this['myrssi'] += "<p>" + data['name'] + ' | ' + data['rssi'] + '</p>';
+                _this['myrssi'].push("Scan Subscriber: " + data['name'] + ' | ' + data['rssi']);
+                _this['myCount']++;
                 if (data['name'] == "Blynk") {
-                    _this['myrssi'] += "<p> Blynk FOUND!!!! </p>";
+                    _this['myrssi'].push("Blynk Found!!!");
+                    _this['myCount']++;
                 }
             });
         }, 1000);
@@ -55780,7 +55787,7 @@ var AboutPage = (function () {
 }());
 AboutPage = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
-        selector: 'page-about',template:/*ion-inline-start:"/home/ubuntu/workspace/ionictest/myapp/src/pages/about/about.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      About\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\nLETS IMAGINE RSSI IS HERE... <br />\n<hr />\nRSSI (VER2):  {{myrssi}}\n</ion-content>\n'/*ion-inline-end:"/home/ubuntu/workspace/ionictest/myapp/src/pages/about/about.html"*/
+        selector: 'page-about',template:/*ion-inline-start:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/pages/about/about.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      About\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\nRSSI SCAN RESULTS: ({{myCount}})<br />\n<hr />\n<p *ngFor="let entry of myrssi">{{entry}}</p>\n\n</ion-content>\n'/*ion-inline-end:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/pages/about/about.html"*/
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_ble__["a" /* BLE */]])
 ], AboutPage);
@@ -55814,7 +55821,7 @@ var ContactPage = (function () {
 }());
 ContactPage = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
-        selector: 'page-contact',template:/*ion-inline-start:"/home/ubuntu/workspace/ionictest/myapp/src/pages/contact/contact.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Contact\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n    <ion-item>\n      <ion-icon name="ionic" item-left></ion-icon>\n      @ionicframework\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/ubuntu/workspace/ionictest/myapp/src/pages/contact/contact.html"*/
+        selector: 'page-contact',template:/*ion-inline-start:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/pages/contact/contact.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      Contact\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-list-header>Follow us on Twitter</ion-list-header>\n    <ion-item>\n      <ion-icon name="ionic" item-left></ion-icon>\n      @ionicframework\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/pages/contact/contact.html"*/
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]])
 ], ContactPage);
@@ -55848,7 +55855,7 @@ var HomePage = (function () {
 }());
 HomePage = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
-        selector: 'page-home',template:/*ion-inline-start:"/home/ubuntu/workspace/ionictest/myapp/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Home</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <h2>Welcome to Ionic!</h2>\n  <p>\n    This starter project comes with simple tabs-based layout for apps\n    that are going to primarily use a Tabbed UI.\n  </p>\n  <p>\n    Take a look at the <code>src/pages/</code> directory to add or change tabs,\n    update any existing page or create new pages.\n  </p>\n  <p>\n    THIS IS MY TEST VERSION 5\n  </p>\n</ion-content>\n'/*ion-inline-end:"/home/ubuntu/workspace/ionictest/myapp/src/pages/home/home.html"*/
+        selector: 'page-home',template:/*ion-inline-start:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/pages/home/home.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>Home</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content padding>\n  <h2>Welcome to Ionic / BLE Test!</h2>\n  <p>\n    This is a simple project to explore BLE capabilities in a device that can be controlled through a Ionic App.\n  </p>\n  <p>\n    Take a look at the <code>src/pages/</code> directory to add or change tabs,\n    update any existing page or create new pages.\n  </p>\n  <p>\n    THIS IS MY TEST VERSION 6\n  </p>\n</ion-content>\n'/*ion-inline-end:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/pages/home/home.html"*/
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["d" /* NavController */]])
 ], HomePage);
@@ -55887,7 +55894,7 @@ var TabsPage = (function () {
     return TabsPage;
 }());
 TabsPage = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({template:/*ion-inline-start:"/home/ubuntu/workspace/ionictest/myapp/src/pages/tabs/tabs.html"*/'<ion-tabs>\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/home/ubuntu/workspace/ionictest/myapp/src/pages/tabs/tabs.html"*/
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({template:/*ion-inline-start:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/pages/tabs/tabs.html"*/'<ion-tabs>\n  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/pages/tabs/tabs.html"*/
     }),
     __metadata("design:paramtypes", [])
 ], TabsPage);
@@ -75231,7 +75238,7 @@ var MyApp = (function () {
     return MyApp;
 }());
 MyApp = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({template:/*ion-inline-start:"/home/ubuntu/workspace/ionictest/myapp/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/home/ubuntu/workspace/ionictest/myapp/src/app/app.html"*/
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({template:/*ion-inline-start:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/home/ubuntu/workspace/robotics/ionictests/myapp/src/app/app.html"*/
     }),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["e" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
 ], MyApp);
