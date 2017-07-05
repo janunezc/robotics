@@ -3,14 +3,15 @@
     <ion-title>
       LED
     </ion-title>
+    <hr />
+    <button (click)="comando()">CMD: {{ComandoTXT}}</button>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <p>Seleciona el dispositivo</p>
   <ion-list >
-    <ion-item-sliding *ngFor="let dispositivo of dispositivosEncontrados">
-      <button ion-item (click)="conectar(dispositivo['id'])">{{dispositivo['name']}} : {{dispositivo['rssi']}}</button>
+    <ion-item-sliding *ngFor="let message of messages">
+      <div ion-item>{{message}}</div>
     </ion-item-sliding>
   </ion-list>
 </ion-content>
