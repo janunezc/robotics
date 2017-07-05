@@ -3,10 +3,10 @@ import { NavController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
 
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html'
+  selector: 'page-scan',
+  templateUrl: 'scan.html'
 })
-export class AboutPage {
+export class ScanPage {
 
   constructor(public navCtrl: NavController, private ble: BLE) {
     this['myrssi'] = [];  
