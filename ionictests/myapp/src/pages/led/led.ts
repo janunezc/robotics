@@ -50,8 +50,12 @@ export class LEDPage {
             clearInterval(this["intervalHandle"]);
             this["targetDevice"] = data;
             this["ComandoTXT"] = "CAMBIAR LED";
-            
-            this.navCtrl.setRoot(this.navCtrl.getActive().component);
+
+            let idx = 0;
+            while(idx<10000){
+              this["test"] = idx;
+              idx ++;
+            }
           }
         });
       },2100);//END OF INTERVAL DEFINITION
