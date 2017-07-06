@@ -1,17 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      LED
-    </ion-title>
-    <hr />
-    <button (click)="comando()">CMD: {{ComandoTXT}}</button>
+    <ion-title>LED </ion-title>
+    <button ion-button (click)="Command()">{{ComandoTXT}}</button>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-  <ion-list >
-    <ion-item-sliding *ngFor="let message of messages">
-      <div ion-item>{{message}}</div>
-    </ion-item-sliding>
-  </ion-list>
+  <p>LED  Messages: ({{myCount}})</p>
+  <hr />
+  <p *ngFor="let message of messages">{{message}}</p>
 </ion-content>

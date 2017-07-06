@@ -1,14 +1,11 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      SCAN
-    </ion-title>
+    <ion-title>SCAN</ion-title>
+    <button ion-button (click)="Command();"    >{{ComandoTXT}}</button> <!--Stylish Button calls Command() function on Click, Shows the ComandoTXT text in the button-->
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
-RSSI SCAN RESULTS: ({{myCount}})<br />
-<hr />
-<p *ngFor="let entry of myrssi">{{index}} - {{entry}}</p>
-
+  <p>SCAN Messages: ({{myCount}})</p>
+  <hr /> <!-- JUST A HOROZONTAL LINE-->
+  <p *ngFor="let message of messages">{{message}}</p> <!--ONE PARAGRAPH PER message IN messages variable-->
 </ion-content>
