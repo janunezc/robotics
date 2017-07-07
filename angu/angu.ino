@@ -2,11 +2,11 @@
 
 const int ledPin = 13; // set ledPin to on-board LED
 
-BLEService ledService("19B10010-E8F2-537E-4F6C-D104768A1214"); // create service
+BLEService ledService("19B10010-E8F2-537E-4F6C-D104768A1215"); // create service
 
 
 // create switch characteristic and allow remote device to read and write
-BLECharCharacteristic ledCharacteristic("19B10011-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+BLECharCharacteristic ledCharacteristic("19B10011-E8F2-537E-4F6C-D104768A1215", BLERead | BLEWrite);
 
 void setup() {
   Serial.begin(9600);
