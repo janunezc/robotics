@@ -1,0 +1,11 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>LED </ion-title>
+    <button ion-button (click)="Command()">{{ComandoTXT}}</button>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <p>LED  Messages: ({{myCount}} | {{test}})</p>
+  <hr />
+  <p *ngFor="let message of messages">{{message}}</p>
+</ion-content>
