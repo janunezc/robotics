@@ -1,7 +1,8 @@
 #include <CurieBLE.h>
 
 const int ledPin = 13; // set ledPin to on-board LED
-
+//                                                        V
+//ID IS A TEST. IT WAS 19B10010-E8F2-537E-4F6C-D104768A1214<<<<<
 BLEService ledService("19B10010-E8F2-537E-4F6C-D104768A1215"); // create service
 
 
