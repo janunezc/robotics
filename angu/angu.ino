@@ -46,7 +46,8 @@ void loop() {
     // update LED, either central has written to characteristic or button state has changed
     Serial.println(ledCharacteristic.valueLength());
     const byte* val = ledCharacteristic.value();
-    String valueStr = String((const char *)val);
+    
+    String valueStr = String((const char *)val).substring(ledCharacteristic.valueLength());
     Serial.println("---" + valueStr + "---");
     /**
     12345678901234567890 1234567890
