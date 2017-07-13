@@ -7,7 +7,7 @@ BLEService ledService("19B10010-E8F2-537E-4F6C-D104768A1215"); // create service
 
 
 // create switch characteristic and allow remote device to read and write
-BLECharCharacteristic ledCharacteristic("19B10011-E8F2-537E-4F6C-D104768A1215", BLERead | BLEWrite);
+BLECharacteristic ledCharacteristic("19B10011-E8F2-537E-4F6C-D104768A1215", BLERead | BLEWrite, 20);
 
 void setup() {
   Serial.begin(9600);
@@ -29,8 +29,7 @@ void setup() {
   BLE.addService(ledService);
   
   //const char* valueToWrite = "THIS IS A TEXT VALUE";
-  char c = 'A';
-  ledCharacteristic.setValue(c);
+  //ledCharacteristic.write(0);
 
   // start advertising
   BLE.advertise();
@@ -46,9 +45,10 @@ void loop() {
   if (ledCharacteristic.written()) {
     // update LED, either central has written to characteristic or button state has changed
     Serial.println(ledCharacteristic.valueLength());
-    Serial.println(ledCharacteristic.value());
-    Serial.println(ledCharacteristic.value());
-    if (ledCharacteristic.value()) {
+    const byte* val = ledCharacteristic.value();
+    String valueStr = String((const char *)val);
+    Serial.println("---" + valueStr + "---");
+    if (valueStr.startsWith("ON")) {
       Serial.println("LED on");
       digitalWrite(ledPin, HIGH);
     } else {
