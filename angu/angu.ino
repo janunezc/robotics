@@ -48,6 +48,11 @@ void loop() {
     const byte* val = ledCharacteristic.value();
     String valueStr = String((const char *)val);
     Serial.println("---" + valueStr + "---");
+    /**
+    12345678901234567890 1234567890
+    ON
+    ON345678901234567890
+    */
     if (valueStr.startsWith("ON")) {
       Serial.println("LED on");
       digitalWrite(ledPin, HIGH);
