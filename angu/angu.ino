@@ -1,6 +1,6 @@
 #include <CurieBLE.h>
 
-const int ledPin = 13; // set ledPin to on-board LED
+const int ledPin = 3; // set ledPin to on-board LED
 //                                                        V
 //ID IS A TEST. IT WAS 19B10010-E8F2-537E-4F6C-D104768A1214<<<<<
 BLEService ledService("19B10010-E8F2-537E-4F6C-D104768A1215"); // create service
@@ -11,13 +11,14 @@ BLECharCharacteristic ledCharacteristic("19B10011-E8F2-537E-4F6C-D104768A1215", 
 
 void setup() {
   Serial.begin(9600);
+  delay(1000);
   pinMode(ledPin, OUTPUT); // use the LED on pin 13 as an output
-
+  ledSignal(5,200);
   // begin initialization
   BLE.begin();
 
   // set the local name peripheral advertises
-  BLE.setLocalName("Blynk");
+  BLE.setLocalName("ANGU");
   // set the UUID for the service this peripheral advertises:
   BLE.setAdvertisedService(ledService);
 
@@ -26,13 +27,16 @@ void setup() {
 
   // add the service
   BLE.addService(ledService);
-
-  ledCharacteristic.setValue(0);
+  
+  //const char* valueToWrite = "THIS IS A TEXT VALUE";
+  char c = 'A';
+  ledCharacteristic.setValue(c);
 
   // start advertising
   BLE.advertise();
 
   Serial.println("Bluetooth device active, waiting for connections...");
+  
 }
 
 void loop() {
@@ -41,6 +45,8 @@ void loop() {
 
   if (ledCharacteristic.written()) {
     // update LED, either central has written to characteristic or button state has changed
+    Serial.println(ledCharacteristic.valueLength());
+    Serial.println(ledCharacteristic.value());
     Serial.println(ledCharacteristic.value());
     if (ledCharacteristic.value()) {
       Serial.println("LED on");
@@ -52,3 +58,11 @@ void loop() {
   }
 }
 
+void ledSignal(int times, int milliseconds){
+  for(int i=0; i<times; i++){
+    digitalWrite(ledPin, HIGH);
+    delay(milliseconds);
+    digitalWrite(ledPin, LOW);
+    delay(milliseconds);
+  }
+}
