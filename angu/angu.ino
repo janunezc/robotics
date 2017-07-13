@@ -11,7 +11,7 @@ BLECharacteristic ledCharacteristic("19B10011-E8F2-537E-4F6C-D104768A1215", BLER
 
 void setup() {
   Serial.begin(9600);
-  delay(1000);
+  delay(500);
   pinMode(ledPin, OUTPUT); // use the LED on pin 13 as an output
   ledSignal(5,200);
   // begin initialization
