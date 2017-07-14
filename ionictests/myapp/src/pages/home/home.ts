@@ -36,11 +36,7 @@ export class PaginaInicio {
     }
   }
 
-  public conectar(dispositivo:any){
-    clearInterval(this.buscador);
-    this.navCtrl.push(PaginaOpciones, {
-      dispositivo: dispositivo
-    });
+  constructor(public navCtrl: NavController) {
+    
+    this["version"] = 45;
   }
-
-}
