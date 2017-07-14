@@ -1,11 +1,129 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>SCAN</ion-title>
-    <button ion-button (click)="Command();"    >{{ComandoTXT}}</button> <!--Stylish Button calls Command() function on Click, Shows the ComandoTXT text in the button-->
+  <ion-navbar  no-border-bottom>
+    <ion-title>Opciones</ion-title>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="opcion">
+      <ion-segment-button value="1">
+        Color
+      </ion-segment-button>
+      <ion-segment-button value="2">
+        Olas
+      </ion-segment-button>
+      <ion-segment-button value="5">
+        Respirar
+      </ion-segment-button>
+      <ion-segment-button value="3">
+        Arcoiris
+      </ion-segment-button>
+      <ion-segment-button value="4">
+        Destellos
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
+
 <ion-content padding>
-  <p>SCAN Messages: ({{myCount}})</p>
-  <hr /> <!-- JUST A HOROZONTAL LINE-->
-  <p *ngFor="let message of messages">{{message}}</p> <!--ONE PARAGRAPH PER message IN messages variable-->
-</ion-content>
+    <div [ngSwitch]="opcion">
+      <ion-list *ngSwitchCase="'1'"> <!--Color estatico -->
+        <p> Selacion de un color estatico!<p>
+        <ion-item>
+          <ion-range min="0" step="1" max="360" [(ngModel)]="color.valores.h">
+            <ion-icon range-left small name="color-palette"></ion-icon>
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-range min="0" step="1" max="100"  [(ngModel)]="color.valores.s">
+            <ion-icon range-left small name="contrast"></ion-icon>
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-range min="0" step="1" max="100" [(ngModel)]="color.valores.v">
+            <ion-icon range-left small name="sunny"></ion-icon>
+          </ion-range>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'2'"><!--Olas-->
+        <p> Selacion de modo Olas, selecione la velocidad de la animacion y el brillo!<p>
+        <ion-item>
+          <ion-range min="1" step="1" max="100" [(ngModel)]="olas.valores.v">
+            <ion-icon range-left small name="speedometer"></ion-icon>
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-range min="0" step="1" max="100" [(ngModel)]="olas.valores.b">
+            <ion-icon range-left small name="sunny"></ion-icon>
+          </ion-range>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'3'"> <!--Arcoiris -->
+        <p> Selacion de un modo Arcoiris, selecione la velocidad de la animacion y el brillo!<p>
+        <ion-item>
+          <ion-range min="1" step="1" max="100" [(ngModel)]="arcoiris.valores.v">
+            <ion-icon range-left small name="speedometer"></ion-icon>
+          </ion-range>
+        </ion-item>
+        <ion-item>
+          <ion-range min="0" step="1" max="100" [(ngModel)]="arcoiris.valores.b">
+            <ion-icon range-left small name="sunny"></ion-icon>
+          </ion-range>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'4'"><!--Destellos-->
+        <p> Selacion de modo Destellos, selecione el tono, saturacion y la frecuencia de destellos!<p>
+          <ion-item>
+            <ion-range min="0" step="1" max="360" [(ngModel)]="destellos.valores.h">
+              <ion-icon range-left small name="color-palette"></ion-icon>
+            </ion-range>
+          </ion-item>
+          <ion-item>
+            <ion-range min="0" step="1" max="100"  [(ngModel)]="destellos.valores.s">
+              <ion-icon range-left small name="contrast"></ion-icon>
+            </ion-range>
+          </ion-item>
+          <ion-item>
+            <ion-range min="1" step="1" max="100" [(ngModel)]="destellos.valores.v">
+              <ion-icon range-left small name="speedometer"></ion-icon>
+            </ion-range>
+          </ion-item>
+          <ion-item>
+            <ion-range min="0" step="1" max="100" [(ngModel)]="destellos.valores.b">
+              <ion-icon range-left small name="sunny"></ion-icon>
+            </ion-range>
+          </ion-item>
+      </ion-list>
+      <ion-list *ngSwitchCase="'5'"><!--Destellos-->
+        <p> Selacion de modo respirar, selecione el tono y la velocidad de la animacion!<p>
+          <ion-item>
+            <ion-range min="0" step="1" max="360" [(ngModel)]="respirar.valores.h">
+              <ion-icon range-left small name="color-palette"></ion-icon>
+            </ion-range>
+          </ion-item>
+          <ion-item>
+            <ion-range min="0" step="1" max="100"  [(ngModel)]="respirar.valores.s">
+              <ion-icon range-left small name="contrast"></ion-icon>
+            </ion-range>
+          </ion-item>
+          <ion-item>
+            <ion-range min="1" step="1" max="100" [(ngModel)]="respirar.valores.v">
+              <ion-icon range-left small name="speedometer"></ion-icon>
+            </ion-range>
+          </ion-item>
+          <ion-item>
+            <ion-range min="0" step="1" max="100" [(ngModel)]="respirar.valores.b">
+              <ion-icon range-left small name="sunny"></ion-icon>
+            </ion-range>
+          </ion-item>
+      </ion-list>
+    </div>
+
+    <ion-fab bottom right>
+      <button  color="danger" ion-fab (click)="salir()"><ion-icon name="exit"></ion-icon></button>
+    </ion-fab>
+    <ion-fab bottom left>
+      <button color="light" ion-fab (click)="apagar()"><ion-icon name="power"></ion-icon></button>
+    </ion-fab>
+  </ion-content>
