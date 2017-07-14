@@ -9,7 +9,7 @@ export class HomePage {
 
   constructor(public navCtrl: NavController) {
     
-    this["version"] = 39;
+    this["version"] = 45;
   }
 
 }
