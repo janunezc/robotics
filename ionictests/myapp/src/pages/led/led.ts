@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 
 @Component({
   selector: 'page-led',
@@ -9,7 +8,7 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 })
 export class LEDPage {
 
-  constructor(public navCtrl: NavController, /*private ble: BLE , */ private ble: BluetoothSerial ) {
+  constructor(public navCtrl: NavController, private ble: BLE ) {
     this['myCount'] = 0;
     this['valor'] = 0;
     this['messages'] = [];
@@ -18,7 +17,6 @@ export class LEDPage {
     this['ble'] = ble;
     this['ComandoTXT'] = "FIND ANGU";
     this['targetDevice'] = {};
-    ble.enable();
   }
   
   public Command(){
