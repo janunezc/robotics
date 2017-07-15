@@ -23,6 +23,7 @@ export class LEDPage {
     this['messages'] = [];
     this['valor'] = 0;
     this['service_id'] = "19B10010-E8F2-537E-4F6C-D104768A1215";
+    this['characteristic_id'] = "19B10011-E8F2-537E-4F6C-D104768A1215";
     this['ble'] = ble;
     this['ComandoTXT'] = this.constants.CMD_FIND_ANGU;
     this['targetDevice'] = {};
@@ -86,7 +87,7 @@ export class LEDPage {
     this.ble.connect(id).subscribe(datos=>{
       this.setMessage("BLE CONNECT SUBSCRIBE: BEGIN. Doing ble write...");
       this['valor'] = "hello world";
-      this.ble.write(this['targetDevice'].id, this['service_id'],this['service_id'], this.stringToBytes(this["valor"]) ).then(()=>{
+      this.ble.write(this['targetDevice'].id, this['service_id'],this['characteristic_id'], this.stringToBytes(this["valor"]) ).then(()=>{
         this.setMessage("BLE WRITE THEN!");
         this.ble.disconnect(id);
       },(error)=>{
