@@ -23,7 +23,7 @@ export class LEDPage {
    */
   constructor(public navCtrl: NavController, private ble: BLE ) {
     this['messages'] = [];
-    this['valor'] = "ON FIRST TIME";
+    this['value'] = "ON FIRST TIME";
     this['service_id'] = "19B10010-E8F2-537E-4F6C-D104768A1215";
     this['characteristic_id'] = "19B10011-E8F2-537E-4F6C-D104768A1215";
     this['ble'] = ble;
@@ -87,8 +87,9 @@ export class LEDPage {
     this.setMessage(id);
     
     this.ble.connect(id).subscribe(datos=>{
-      this.setMessage("BLE CONNECT SUBSCRIBE: BEGIN. Doing ble write...");
-      this.ble.write(this['targetDevice'].id, this['service_id'],this['characteristic_id'], this.stringToBytes(this["valor"]) ).then(()=>{
+      this.setMessage("BLE CONNECT SUBSCRIBE: BEGIN. Doing ble write..." + this["value"]);
+
+      this.ble.write(this['targetDevice'].id, this['service_id'],this['characteristic_id'], this.stringToBytes(this["value"]) ).then(()=>{
         this.setMessage("BLE WRITE THEN:" + this["value"]);
         if(this["value"]==this.constants.ON){
           this["value"] = this.constants.OFF;
