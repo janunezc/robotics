@@ -7,34 +7,52 @@ import { BLE } from '@ionic-native/ble';
   templateUrl: 'led.html'
 })
 export class LEDPage {
+  /**
+   * Constants that we will use around the controller
+   */
+  public constants  = {
+      CMD_FIND_ANGU:"FIND ANGU",
+      CMD_STOP_SCAN:"Scanning... (Click to Stop)",
+      CMD_TOGGLE_LED:"CAMBIAR LED"
+    };
 
+  /**
+   * Constructor for the controller. Everything begins here.
+   */
   constructor(public navCtrl: NavController, private ble: BLE ) {
-    this['myCount'] = 0;
-    this['valor'] = 0;
     this['messages'] = [];
+    this['valor'] = 0;
     this['service_id'] = "19B10010-E8F2-537E-4F6C-D104768A1214";
-    this.setMessage("Constructor: Begin!");
     this['ble'] = ble;
-    this['ComandoTXT'] = "FIND ANGU";
+    this['ComandoTXT'] = this.constants.CMD_FIND_ANGU;
     this['targetDevice'] = {};
+    this.setMessage("Constructor: Begin!");
   }
   
+  /**
+   * This is triggered when the button is clicked.
+   */
   public Command(){
-    if(this['ComandoTXT']==="FIND ANGU") {
+    this.setMessage("COMMAND RECEIVED!");
+    this.setMessage(this["ComandoTXT"]);
+    if(this['ComandoTXT']===this.constants.CMD_FIND_ANGU) {
+      this['ComandoTXT'] = this.constants.CMD_STOP_SCAN;
       this.findANGU();
-    }
-    
-    if(this['ComandoTXT']=== "CAMBIAR LED"){
+    } else if (this['ComandoTXT']===this.constants.CMD_STOP_SCAN) {
+      this.setMessage("Command: STOPING SCAN...");
+      clearInterval(this['intervalHandle']);
+      this['ComandoTXT'] = this.constants.CMD_FIND_ANGU;
+    } else if(this['ComandoTXT']=== this.constants.CMD_TOGGLE_LED){
       this.setMessage("ComandoTXT = CAMBIAR LED: Calling txData()");
-      this.txData();
-      
+      this.txData();    
     }
   }
   
+  /**
+   * This searches for ANGU in the AIR using SCAN technique.
+   */
   public findANGU(){
       this.setMessage("SCAN: Begin!");
-      this['ComandoTXT'] = "Scanning...";
-
       let  ble = this['ble'];
       
       this.setMessage("SCAN: BLE ENABLE!");
@@ -44,18 +62,21 @@ export class LEDPage {
       this['intervalHandle'] = setInterval(() => { // SET AN INTERVAL THAT RUNS EVERY 3 Seconds
         this.setMessage("INTERVAL: BLE SCAN...");
         //https://ionicframework.com/docs/native/ble/ 
-        //ble.scan([], 2 /*seconds (0) */).subscribe( data => { //DO SCAN DURING 1 SECOND
-        //  this.setMessage("SCAN SUBSCRIBER: " + data['id'] + ' | ' + data['name'] + ' | ' + data['rssi']);
-        //  if(data['name']=="ANGU"){
-        //    this.setMessage("SCAN SUBSCRIBER: ANGU FOUND! STOPPED SCANNING!");
-        //    clearInterval(this["intervalHandle"]);
-       //     this["targetDevice"] = data;
-        //    this["ComandoTXT"] = "CAMBIAR LED";
-       //   }
-       // });
+        ble.scan([], 2 /*seconds (0) */).subscribe( data => { //DO SCAN DURING 1 SECOND
+          this.setMessage("SCAN SUBSCRIBER: " + data['id'] + ' | ' + data['name'] + ' | ' + data['rssi']);
+          if(data['name']=="ANGU"){
+            this.setMessage("SCAN SUBSCRIBER: ANGU FOUND! STOPPED SCANNING!");
+            clearInterval(this["intervalHandle"]);
+            this["targetDevice"] = data;
+            this["ComandoTXT"] = this.constants.CMD_TOGGLE_LED;
+          }
+        });
       },2100);//END OF INTERVAL DEFINITION
     }  
-    
+
+  /**
+   * This transmits data to the selected ANGU device  
+   */  
   public txData(){
     this.setMessage("txData: BEGIN! Doing ble connect...");
     
@@ -65,37 +86,25 @@ export class LEDPage {
     this.ble.connect(id).subscribe(datos=>{
       this.setMessage("BLE CONNECT SUBSCRIBE: BEGIN. Doing ble write...");
       this['valor'] = "hello world";
-      //this.ble.write(this['targetDevice'].id, this['targetDevice'].service_id,this['targetDevice'].service_id, this['valor'].buffer ).then(()=>{
-      //  this.setMessage("BLE WRITE THEN!");
-      //  this.ble.disconnect(id);
-      //},(error)=>{
-      //  this.setMessage("BLE Write ERROR!");
-      //  this.setMessage(error);
-      //});
+      this.ble.write(this['targetDevice'].id, this['service_id'],this['service_id'], this.stringToBytes(this["valor"]) ).then(()=>{
+        this.setMessage("BLE WRITE THEN!");
+        this.ble.disconnect(id);
+      },(error)=>{
+        this.setMessage("BLE Write ERROR!");
+        this.setMessage(error);
+      });
     },error=>{
       this.setMessage("BLE Connect ERROR!");
       this.setMessage(error.message);
     });
   }
   
-/*
-  
-  public conectar(id){
-    this.ble.connect(id).subscribe(datos=>{
-      this.escribir(id);
-    },error=>{
-      this.encontrar();  
-    });
-  }
-
-  public escribir(id){
-
-  }
-  
-*/
+  /**
+   * Adds message to the history on screen
+   */
   public setMessage(message){
-    this['myCount'] ++;
-    message = this['myCount'] + ':' + message;
+    var count = this['messages'].length;
+    message = count + ':' + message;
     this['messages'].unshift(message);
   }
 
