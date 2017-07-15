@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
+//import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 
 @Component({
   selector: 'page-led',
@@ -9,7 +9,7 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
 })
 export class LEDPage {
 
-  constructor(public navCtrl: NavController, private ble: BLE, private bluetoothSerial: BluetoothSerial) {
+  constructor(public navCtrl: NavController, private ble: BLE /*, private bluetoothSerial: BluetoothSerial */) {
     this['myCount'] = 0;
     this['valor'] = 0;
     this['messages'] = [];
@@ -79,6 +79,21 @@ export class LEDPage {
     });
   }
   
+/*
+  
+  public conectar(id){
+    this.ble.connect(id).subscribe(datos=>{
+      this.escribir(id);
+    },error=>{
+      this.encontrar();  
+    });
+  }
+
+  public escribir(id){
+
+  }
+  
+*/
   public setMessage(message){
     this['myCount'] ++;
     message = this['myCount'] + ':' + message;
@@ -99,3 +114,4 @@ export class LEDPage {
       return String.fromCharCode.apply(null, new Uint8Array(buffer));
   }
 
+}

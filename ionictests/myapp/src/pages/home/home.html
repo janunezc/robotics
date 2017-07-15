@@ -1,17 +1,19 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Dispositivos</ion-title>
+    <ion-title>Home</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <h2>Welcome to Ionic / BLE Test ++!</h2>
   <p>
-    Seleciona el dispositivo que quieres controlar!
+    This is a simple project to explore BLE capabilities in a device that can be controlled through a Ionic App.
   </p>
-  <ion-list>
-    <ion-item-sliding *ngFor="let dispositivo of dispositivos">
-      <button ion-item  (click)="conectar(dispositivo)">{{dispositivo.name}}<br/><small>{{dispositivo.id}} [{{dispositivo.rssi}}]</small></button>
-    </ion-item-sliding>
-  </ion-list>
-
+  <p>
+    Take a look at the <code>src/pages/</code> directory to add or change tabs,
+    update any existing page or create new pages.
+  </p>
+  <p>
+    THIS IS MY TEST VERSION 10.{{version}}
+  </p>
 </ion-content>
