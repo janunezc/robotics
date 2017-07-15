@@ -79,6 +79,21 @@ export class LEDPage {
     });
   }
   
+/*
+  
+  public conectar(id){
+    this.ble.connect(id).subscribe(datos=>{
+      this.escribir(id);
+    },error=>{
+      this.encontrar();  
+    });
+  }
+
+  public escribir(id){
+
+  }
+  
+*/
   public setMessage(message){
     this['myCount'] ++;
     message = this['myCount'] + ':' + message;
@@ -99,3 +114,4 @@ export class LEDPage {
       return String.fromCharCode.apply(null, new Uint8Array(buffer));
   }
 
+}
