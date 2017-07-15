@@ -22,7 +22,7 @@ export class LEDPage {
   constructor(public navCtrl: NavController, private ble: BLE ) {
     this['messages'] = [];
     this['valor'] = 0;
-    this['service_id'] = "19B10010-E8F2-537E-4F6C-D104768A1214";
+    this['service_id'] = "19B10010-E8F2-537E-4F6C-D104768A1215";
     this['ble'] = ble;
     this['ComandoTXT'] = this.constants.CMD_FIND_ANGU;
     this['targetDevice'] = {};
