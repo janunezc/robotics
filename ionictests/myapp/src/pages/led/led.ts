@@ -13,7 +13,9 @@ export class LEDPage {
   public constants  = {
       CMD_FIND_ANGU:"FIND ANGU",
       CMD_STOP_SCAN:"Scanning... (Click to Stop)",
-      CMD_TOGGLE_LED:"CAMBIAR LED"
+      CMD_TOGGLE_LED:"CAMBIAR LED",
+      ON:"ON",
+      OFF:"OFF"
     };
 
   /**
@@ -21,7 +23,7 @@ export class LEDPage {
    */
   constructor(public navCtrl: NavController, private ble: BLE ) {
     this['messages'] = [];
-    this['valor'] = 0;
+    this['valor'] = "ON FIRST TIME";
     this['service_id'] = "19B10010-E8F2-537E-4F6C-D104768A1215";
     this['characteristic_id'] = "19B10011-E8F2-537E-4F6C-D104768A1215";
     this['ble'] = ble;
@@ -86,13 +88,18 @@ export class LEDPage {
     
     this.ble.connect(id).subscribe(datos=>{
       this.setMessage("BLE CONNECT SUBSCRIBE: BEGIN. Doing ble write...");
-      this['valor'] = "hello world";
       this.ble.write(this['targetDevice'].id, this['service_id'],this['characteristic_id'], this.stringToBytes(this["valor"]) ).then(()=>{
-        this.setMessage("BLE WRITE THEN!");
+        this.setMessage("BLE WRITE THEN:" + this["value"]);
+        if(this["value"]==this.constants.ON){
+          this["value"] = this.constants.OFF;
+        } else {
+          this["value"] = this.constants.ON;
+        }
         this.ble.disconnect(id);
       },(error)=>{
         this.setMessage("BLE Write ERROR!");
         this.setMessage(error);
+        this.ble.disconnect(id);
       });
     },error=>{
       this.setMessage("BLE Connect ERROR!");
@@ -122,5 +129,4 @@ export class LEDPage {
   public bytesToString(buffer) {
       return String.fromCharCode.apply(null, new Uint8Array(buffer));
   }
-
 }
