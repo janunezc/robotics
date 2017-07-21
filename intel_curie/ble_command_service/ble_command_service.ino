@@ -1,5 +1,5 @@
 #include <CurieBLE.h>
-#define ledPin 3
+#define ledPin 13
 
 //Definimos un servicio BLE
 BLEService servicioBLE_Comandos("db938b80-f010-44b6-8aa9-1835adf9419a"); // create service
