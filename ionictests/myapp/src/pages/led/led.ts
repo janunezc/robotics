@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { BLE } from '@ionic-native/ble';
+import { ApplicationRef } from '@angular/core'
 
 @Component({
   selector: 'page-led',
   templateUrl: 'led.html'
 })
+
+
 export class LEDPage {
+
   /**
    * Constants that we will use around the controller
    */
@@ -21,7 +25,7 @@ export class LEDPage {
   /**
    * Constructor for the controller. Everything begins here.
    */
-  constructor(public navCtrl: NavController, private ble: BLE ) {
+  constructor(public navCtrl: NavController, private ble: BLE, private applicationRef : ApplicationRef ) {
     this['messages'] = [];
     this['value'] = "ON FIRST TIME";
     this['service_id'] = "19B10010-E8F2-537E-4F6C-D104768A1215";
@@ -30,6 +34,7 @@ export class LEDPage {
     this['ComandoTXT'] = this.constants.CMD_FIND_ANGU;
     this['targetDevice'] = {};
     this.setMessage("Constructor: Begin!");
+    this["applicationRef"] = applicationRef;
   }
   
   /**
@@ -73,6 +78,7 @@ export class LEDPage {
             this["targetDevice"] = data;
             this["ComandoTXT"] = this.constants.CMD_TOGGLE_LED;
           }
+          this.applicationRef.tick();
         });
       },2100);//END OF INTERVAL DEFINITION
     }  
@@ -97,6 +103,7 @@ export class LEDPage {
           this["value"] = this.constants.ON;
         }
         this.ble.disconnect(id);
+        this.applicationRef.tick();
       },(error)=>{
         this.setMessage("BLE Write ERROR!");
         this.setMessage(error);
@@ -115,6 +122,7 @@ export class LEDPage {
     var count = this['messages'].length;
     message = count + ':' + message;
     this['messages'].unshift(message);
+    this.applicationRef.tick();
   }
 
   // ASCII only
