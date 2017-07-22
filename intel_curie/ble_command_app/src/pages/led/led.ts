@@ -90,13 +90,14 @@ export class LEDPage {
           if(data['name']==this.constants.DEVICE_NAME){
             this.SetMessage(this.constants.DEVICE_NAME + " HA SIDO ENCONTRADO!!");
             clearInterval(this["intervalHandle"]);
-            this["targetDevice"] = data;
+            this.TargetDevice = data;
             this["ComandoTXT"] = this.constants.CMD_TOGGLE_LED;
             this.ejecutandoComando = false;
           }
           this.appRef.tick();
         });
       },2100);//FIN DE LA DEFINICIÓN DEL TIMER
+      this.ejecutandoComando = false;
     }
 
   /**
@@ -109,16 +110,16 @@ export class LEDPage {
     this.SetMessage("ID DE DISPOSITIVO: " + id);
 
     this.ble.connect(id).subscribe(datos=>{
-      this.SetMessage("BLE CONNECT CALLBACK: INICIO!. Llamando a BLE WRITE..." + this["value"]);
+      this.SetMessage("BLE CONNECT CALLBACK: INICIO!. Llamando a BLE WRITE..." + this.Value);
 
-      this.ble.write(this.TargetDevice.id, this['service_id'],this['characteristic_id'], this.StringToBytes(this["value"]) ).then(()=>{
-        this.SetMessage("BLE WRITE CALLBACK: INICIO! Cambiando valor... " + this["value"]);
-        if(this["value"]==this.constants.ON){
-          this["value"] = this.constants.OFF;
+      this.ble.write(this.TargetDevice.id, this['service_id'],this['characteristic_id'], this.StringToBytes(this.Value) ).then(()=>{
+        this.SetMessage("BLE WRITE CALLBACK: INICIO! Cambiando valor... " + this.Value);
+        if(this.Value==this.constants.ON){
+          this.Value = this.constants.OFF;
         } else {
-          this["value"] = this.constants.ON;
+          this.Value = this.constants.ON;
         }
-        this.SetMessage("Nuevo valor... " + this["value"]);
+        this.SetMessage("Nuevo valor... " + this.Value);
 
         this.SetMessage("Llamando a BLE DISCONNECT...");
         this.ble.disconnect(id);
