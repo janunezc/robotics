@@ -147,6 +147,12 @@ export class LEDPage {
     var count = this['messages'].length;
     message = count + ':' + message;
     this['messages'].unshift(message);
+
+    /*
+      ESTA LINEA ES IMPORTANTE PARA REFRESCAR LA PANTALLA CUANDO SE GENERAN EVENTOS
+      FUERA DEL CONTROL DE ANGULAR. POR EJEMPLO CUANDO SE LLAMA A UN CALLBACK EN
+      UN PROCESO DE BLE SCAN.
+    */
     this.appRef.tick();
   }
 
