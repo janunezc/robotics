@@ -1,0 +1,12 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>LED</ion-title>
+    <p>Acá podemos operar el LED que está implementado en TinyTILE</p>
+    <button ion-button [disabled]="ejecutandoComando" (click)="Command()">{{ComandoTXT}}</button>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <p>Histórico de Ejecución: ({{myCount}} | {{test}})</p>
+  <hr />
+  <p *ngFor="let message of messages">{{message}}</p>
+</ion-content>
