@@ -5,20 +5,23 @@
 #include <SPI.h>
 
 #define FSIZE 256
+#define ledPin 13
 
 const char *filename = "myfile2.txt";
-const char *contents = "1234567890ABCDEFGHIJ";
+const char *contents = "1234567890ABCDEFGHIJKL";
 
 void setup() {
   Serial.begin(9600);
+  pinMode(ledPin, OUTPUT);
 
+  parpadear (3,1000);
   // wait for Arduino Serial Monitor
-  while (!Serial) ;
-  delay(100);
-
+  delay(1000);
+  parpadear (5,200);
   // Init. SPI Flash chip
   if (!SerialFlash.begin(ONBOARD_FLASH_SPI_PORT, ONBOARD_FLASH_CS_PIN)) {
     Serial.println("Unable to access SPI Flash chip");
+    digitalWrite(ledPin, HIGH);
   }
 
   SerialFlashFile file;
@@ -26,16 +29,18 @@ void setup() {
   // Create the file if it doesn't exist
   if (!create_if_not_exists(filename)) {
     Serial.println("Not enough space to create file " + String(filename));
+    digitalWrite(ledPin, HIGH);
     return;
   }
 
   // Open the file and write test data
   file = SerialFlash.open(filename);
-  
+  parpadear (3,100);
   file.write(contents, strlen(contents) + 1);
   Serial.println("String \"" + String(contents) + "\" written to file " + String(filename));
   file.close();
-  
+
+  parpadear (3,100);
   // Open the file
   SerialFlashFile ff = SerialFlash.open(filename);
   Serial.print("Opening file: ");
@@ -45,6 +50,7 @@ void setup() {
   uint32_t sz = 21;//ff.size();
   Serial.print("Size: "); 
   Serial.println(sz);
+  parpadear (3,100);
   
   uint32_t pos = ff.position();
 
@@ -61,7 +67,7 @@ void setup() {
   Serial.print("|||");
   Serial.print(String(mybuff));
   Serial.println("|||");
- 
+  parpadear (10,50);
 }
 
 bool create_if_not_exists (const char *filename) {
@@ -76,3 +82,13 @@ bool create_if_not_exists (const char *filename) {
 
 void loop() {
 }
+
+void parpadear(int times, int milliseconds){
+  for(int i=0; i<times; i++){
+    digitalWrite(ledPin, HIGH);
+    delay(milliseconds);
+    digitalWrite(ledPin, LOW);
+    delay(milliseconds);
+  }
+}
+

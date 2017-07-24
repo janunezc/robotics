@@ -28,15 +28,15 @@ export class LEDPage {
   constructor(public navCtrl: NavController, private ble: BLE, private applicationRef : ApplicationRef ) {
     this['messages'] = [];
     this['value'] = "ON FIRST TIME";
-    this['service_id'] = "19B10010-E8F2-537E-4F6C-D104768A1215";
-    this['characteristic_id'] = "19B10011-E8F2-537E-4F6C-D104768A1215";
+    this['service_id'] = "db938b80-f010-44b6-8aa9-1835adf9419a";
+    this['characteristic_id'] = "9906064e-9bbe-4eba-b415-bbd223f7d3d9";
     this['ble'] = ble;
     this['ComandoTXT'] = this.constants.CMD_FIND_ANGU;
     this['targetDevice'] = {};
     this.setMessage("Constructor: Begin!");
     this["applicationRef"] = applicationRef;
   }
-  
+
   /**
    * This is triggered when the button is clicked.
    */
@@ -52,24 +52,24 @@ export class LEDPage {
       this['ComandoTXT'] = this.constants.CMD_FIND_ANGU;
     } else if(this['ComandoTXT']=== this.constants.CMD_TOGGLE_LED){
       this.setMessage("ComandoTXT = CAMBIAR LED: Calling txData()");
-      this.txData();    
+      this.txData();
     }
   }
-  
+
   /**
    * This searches for ANGU in the AIR using SCAN technique.
    */
   public findANGU(){
       this.setMessage("SCAN: Begin!");
       let  ble = this['ble'];
-      
+
       this.setMessage("SCAN: BLE ENABLE!");
       ble.enable();
-      
+
       this.setMessage("SCAN: Setting Interval...");
       this['intervalHandle'] = setInterval(() => { // SET AN INTERVAL THAT RUNS EVERY 3 Seconds
         this.setMessage("INTERVAL: BLE SCAN...");
-        //https://ionicframework.com/docs/native/ble/ 
+        //https://ionicframework.com/docs/native/ble/
         ble.scan([], 2 /*seconds (0) */).subscribe( data => { //DO SCAN DURING 1 SECOND
           this.setMessage("SCAN SUBSCRIBER: " + data['id'] + ' | ' + data['name'] + ' | ' + data['rssi']);
           if(data['name']=="COMANDO LED"){
@@ -81,17 +81,17 @@ export class LEDPage {
           this.applicationRef.tick();
         });
       },2100);//END OF INTERVAL DEFINITION
-    }  
+    }
 
   /**
-   * This transmits data to the selected ANGU device  
-   */  
+   * This transmits data to the selected ANGU device
+   */
   public txData(){
     this.setMessage("txData: BEGIN! Doing ble connect...");
-    
+
     let id = this['targetDevice'].id;
     this.setMessage(id);
-    
+
     this.ble.connect(id).subscribe(datos=>{
       this.setMessage("BLE CONNECT SUBSCRIBE: BEGIN. Doing ble write..." + this["value"]);
 
@@ -114,7 +114,7 @@ export class LEDPage {
       this.setMessage(error.message);
     });
   }
-  
+
   /**
    * Adds message to the history on screen
    */
@@ -133,7 +133,7 @@ export class LEDPage {
       }
       return array.buffer;
   }
-  
+
   // ASCII only
   public bytesToString(buffer) {
       return String.fromCharCode.apply(null, new Uint8Array(buffer));

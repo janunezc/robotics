@@ -1,0 +1,12 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>SCAN</ion-title>
+    <p>Este tab implementa una función genérica de escaneo de dispositivos BLE</p>
+    <button ion-button (click)="Command();">{{ComandoTXT}}</button>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <p>Histórico de Ejecución: ({{myCount}})</p>
+  <hr />
+  <p *ngFor="let message of messages">{{message}}</p>
+</ion-content>
