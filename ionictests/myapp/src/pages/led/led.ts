@@ -72,7 +72,7 @@ export class LEDPage {
         //https://ionicframework.com/docs/native/ble/ 
         ble.scan([], 2 /*seconds (0) */).subscribe( data => { //DO SCAN DURING 1 SECOND
           this.setMessage("SCAN SUBSCRIBER: " + data['id'] + ' | ' + data['name'] + ' | ' + data['rssi']);
-          if(data['name']=="ANGU"){
+          if(data['name']=="COMANDO LED"){
             this.setMessage("SCAN SUBSCRIBER: ANGU FOUND! STOPPED SCANNING!");
             clearInterval(this["intervalHandle"]);
             this["targetDevice"] = data;
