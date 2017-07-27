@@ -7,6 +7,7 @@
 
 #define FSIZE 256
 #define ledPin 13
+#define buttonPin 10
 
 const char *filename = "rfidble.txt";
 #define CONTENT_SIZE 153
@@ -15,6 +16,7 @@ void setup() {
   Serial.begin(9600);
   debugMessage("Setup() BEGIN!");
   pinMode(ledPin, OUTPUT);
+  pinMode(buttonPin, INPUT);
   parpadear (3, 1000);
   delay(1000);// wait for Arduino Serial Monitor
   parpadear (3, 500);
@@ -29,8 +31,8 @@ void setup() {
 /*----------------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------------*/
 bool executedOnce = false;
+bool addKeyMode = false;
 void loop() {
-  debugMessage("loop() BEGIN!");
   if (!executedOnce) {
     debugMessage("loop() executing... reading file...");
     String fileContent = readFile();
@@ -53,16 +55,76 @@ void loop() {
       executedOnce = true;
     }
   }
+  processButtonCase();
 
-  parpadear (2, 200);
-  delay(1000);
 }
 
+void processDemoCase() {
+  parpadear(2, 200);
+  delay(1000);
+}
+void processButtonCase() {
+  heartBeat();
+
+  checkButton();
+
+  if (addKeyMode) {
+    addKey("1234");
+    addKey("5678");
+    addKey("91011");
+    addKey("121314");
+    addKey("151617");
+    addKeyMode=false;
+  }
+}
+
+unsigned long nextHeartBeat = 0;
+void heartBeat() {
+  if (millis() > nextHeartBeat) {
+    debugMessage("Heartbeat!");
+    parpadear (2, 200);
+    nextHeartBeat = millis() + 2000;
+  }
+}
+
+/******************************
+   INTERACTION LAYER
+ ******************************/
+
+
+bool didResetMode = false;
+void checkButton() {
+  if (digitalRead(buttonPin) == LOW) {
+    debugMessage("checkButton() Button is low!");
+    long lowDetectionMillis = millis();
+
+    while (digitalRead(buttonPin) == LOW) {
+      long timeInLow = millis() - lowDetectionMillis;
+      if (timeInLow > 3000) {
+        debugMessage("checkButton() button was low for more than 3 seconds! Initializing File...");
+        initFile();
+        didResetMode = true;
+        break;
+      }
+    }
+    if (!didResetMode) {
+      debugMessage("checkButton() Switching to addKey mode...");
+      addKeyMode = true;
+    }
+
+    didResetMode = false;
+  }
+  //debugMessage("checkButton() END!");
+}
+
+/*****************************
+   DEBUG LAYER
+ *****************************/
 void test_addKey() {
   debugMessage("test_addKey() BEGIN!");
   String newKey = "2097876";
   debugMessage("test_addKey() Key to add: " + newKey);
-  
+
   bool newKeyAlreadyFound = findKey(newKey);
   if (newKeyAlreadyFound) {
     debugMessage("test_addKey() WRONG: Key was not expected, but found. " + newKey);
@@ -86,7 +148,7 @@ void test_removeKey() {
   debugMessage("test_removeKey() BEGIN!");
   String keyToRemove = "2097876";
   debugMessage("test_removeKey() Key to remove: " + keyToRemove);
-  
+
   bool keyToRemovePresent = findKey(keyToRemove);
   if (keyToRemovePresent) {
     debugMessage("test_removeKey() CORRECT: Key to remove is present as expected. " + keyToRemove);
@@ -106,7 +168,6 @@ void test_removeKey() {
 }
 void parpadear(int times, int milliseconds) {
   for (int i = 0; i < times; i++) {
-    if(times > 1) debugMessage("Heartbeat!");
     digitalWrite(ledPin, HIGH);
     delay(milliseconds);
     digitalWrite(ledPin, LOW);
@@ -146,9 +207,9 @@ bool verifyEnd(String fileContent) {
   }
 }
 
-bool verifySize(String fileContent){
+bool verifySize(String fileContent) {
   debugMessage("verifySize() BEGIN!");
-  if(fileContent.length()==CONTENT_SIZE){
+  if (fileContent.length() == CONTENT_SIZE) {
     debugMessage("verifySize() CORRECT!");
     return true;
   } else {
@@ -171,7 +232,9 @@ bool verifySearch() {
 }
 
 
-
+/******************************************
+   BUSINESS LAYER
+ ******************************************/
 
 bool findKey(String key) {
   debugMessage("findKey(): " + key);
@@ -240,10 +303,6 @@ void removeKey(String key) {
 
 }
 
-
-
-
-
 /**
    This function initializes file with raw content.
 */
@@ -255,6 +314,11 @@ void initFile() {
 
   debugMessage("initFile() DONE!");
 }
+
+
+/********************
+   DATA ACCESS LAYER
+ ********************/
 
 /**
    This function reads file content into an string. Implements full debugging mechanism
