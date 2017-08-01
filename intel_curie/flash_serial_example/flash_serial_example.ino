@@ -1,35 +1,39 @@
-// Written by Jose Nunez as didactic example on pulic domain.
-// This example depends on Paul Stoffregen's SerialFlash library
-// Download at https://github.com/PaulStoffregen/SerialFlash
+// Escrito por José Núñez como un ejemplo didáctico para el dominio público.
+// Utiliza la librería SerialFlash de Paul Stoffregen.
+// Dicha librería se puede descargar de https://github.com/PaulStoffregen/SerialFlash
 
+//Abstracción de la librería SerialFlash para el controlador Intel Curie
 #include <CurieSerialFlash.h>
 #include <SPI.h>
 
-#define FSIZE 256
-#define ledPin 13
-#define buttonPin 10
+#define FSIZE 256 //Tamaño predefinido del archivo
+#define ledPin 13 //PIN para un LED 
+#define buttonPin 10 //PIN para leer un botón. Debe estar "pull-up" y el botón realiza una conexión a tierra.
 
-const char *filename = "rfidble.txt";
-#define CONTENT_SIZE 153
+const char *filename = "rfidble.txt"; //Nombre del archivo
+#define CONTENT_SIZE 153 //Tamaño predefinido del contenido del archivo para este ejemplo.
 
 void setup() {
   Serial.begin(9600);
-  debugMessage("Setup() BEGIN!");
   pinMode(ledPin, OUTPUT);
   pinMode(buttonPin, INPUT);
-  parpadear (3, 1000);
-  delay(1000);// wait for Arduino Serial Monitor
-  parpadear (3, 500);
+  
+  parpadear (5, 1000);
 
-  // Init. SPI Flash chip
+  debugMessage("Setup() BEGIN!");
+
+  parpadear (3, 500);
+  
+  // Inicializar operación de la librería SerialFlash
   if (!SerialFlash.begin(ONBOARD_FLASH_SPI_PORT, ONBOARD_FLASH_CS_PIN)) {
-    Serial.println("Unable to access SPI Flash chip");
+    debugMessage("Setup() Unable to access SPI Flash chip");
   }
 
   debugMessage("Setup() DONE!");
 }
-/*----------------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------------*/
+/*------*/
+/* LOOP */
+/*------*/
 bool executedOnce = false;
 bool addKeyMode = false;
 void loop() {
@@ -55,14 +59,11 @@ void loop() {
       executedOnce = true;
     }
   }
+  
   processButtonCase();
 
 }
 
-void processDemoCase() {
-  parpadear(2, 200);
-  delay(1000);
-}
 void processButtonCase() {
   heartBeat();
 
@@ -74,7 +75,7 @@ void processButtonCase() {
     addKey("91011");
     addKey("121314");
     addKey("151617");
-    addKeyMode=false;
+    addKeyMode = false;
   }
 }
 
@@ -90,7 +91,6 @@ void heartBeat() {
 /******************************
    INTERACTION LAYER
  ******************************/
-
 
 bool didResetMode = false;
 void checkButton() {
@@ -114,7 +114,6 @@ void checkButton() {
 
     didResetMode = false;
   }
-  //debugMessage("checkButton() END!");
 }
 
 /*****************************
@@ -350,7 +349,7 @@ String readFile() {
   debugMessageNoLF("|||");
   debugMessageNoLF(result);
   debugMessageNoLF("|||");
-  Serial.println("Size:" + String(result.length()));
+  debugMessage("Size:" + String(result.length()));
 
   debugMessage("readFile() DONE!");
   return result;
@@ -361,23 +360,28 @@ String readFile() {
 */
 void saveFile(String newFileContent) {
   debugMessage("saveFile() BEGIN!");
+
   removeFile();
+
   uint8_t flashBuffer[CONTENT_SIZE + 1];
   newFileContent.getBytes(flashBuffer, CONTENT_SIZE + 1);
   SerialFlashFile file;
 
+
   debugMessage("saveFile() Creating file if not exist...");
   // Create the file if it doesn't exist
-  if (!create_if_not_exists(filename)) {
-    Serial.println("Not enough space to create file " + String(filename));
-    digitalWrite(ledPin, HIGH);
-    return;
+  while (!create_if_not_exists(filename)) {
+    debugMessage("Memory filled up! Clearing Flash...");
+    SerialFlash.eraseAll();
+
+    while (SerialFlash.ready() == false) {
+      // wait, 30 seconds to 2 minutes for most chips
+    }
   }
 
   debugMessage("saveFile() Opening file for write!");
   // Open the file and write test data
   file = SerialFlash.open(filename);
-  parpadear (3, 50);
 
   debugMessage("saveFile() Writing into file...!");
   file.write(flashBuffer, CONTENT_SIZE + 1 );
@@ -410,10 +414,10 @@ void removeFile() {
 
 bool create_if_not_exists (const char *filename) {
   if (!SerialFlash.exists(filename)) {
-    Serial.println("Creating file " + String(filename));
+    debugMessage("Creating file " + String(filename));
     return SerialFlash.create(filename, FSIZE);
   }
 
-  Serial.println("File " + String(filename) + " already exists");
+  debugMessage("File " + String(filename) + " already exists");
   return true;
 }
