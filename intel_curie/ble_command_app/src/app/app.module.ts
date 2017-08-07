@@ -8,6 +8,7 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { LEDPage } from '../pages/led/led';
+import { PairPage } from '../pages/pair/pair';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -21,7 +22,8 @@ import { BLE } from '@ionic-native/ble';
     ContactPage,
     HomePage,
     TabsPage,
-    LEDPage
+    LEDPage,
+    PairPage
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,8 @@ import { BLE } from '@ionic-native/ble';
     ContactPage,
     HomePage,
     TabsPage,
-    LEDPage
+    LEDPage,
+    PairPage
   ],
   providers: [
     StatusBar,

@@ -11,7 +11,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(ledPin, OUTPUT); 
   delay(500); //Esperamos un poco de tiempo (500ms) por si se puede habilitar la terminal serial.
-  parpadear(5,200);//Señalizamos con el LED que estamos iniciando el sketch
+  parpadear(3,1000);//Señalizamos con el LED que estamos iniciando el sketch
   
   BLE.begin(); //Inicializamos el sistema Bluetooth Low Energy (BLE) del Curie
   parpadear(2 ,100);//Señal de aviso de que la operación anterior fue exitosa
@@ -28,6 +28,8 @@ void setup() {
 }
 
 void loop() {
+  parpadear(3,100);
+  delay(500);
   BLE.poll(); // Obtenemos cualquier evento BLE que haya sido enviado al dispositivo
 
   if (caracteristicaBLE_Comandos.written()) { //Si hay datos, ejecutamos el comando
