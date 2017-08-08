@@ -35,7 +35,7 @@ void loop()
     setMessage("RFID Data is available! reading it...");
     rfidTagCode = readRFIDCode();
     setMessage("Data: " + String(rfidTagCode));
-    if(millis() &gt; codeReadDelayMaxMillis) {
+    if(millis() > codeReadDelayMaxMillis) {
       if(rfidTagCode == 7598635) {
         setMessage("OPEN");
         openPulse();//This involves a closePulse() call inside the openPulse() function.
@@ -76,7 +76,7 @@ unsigned long readRFIDCode(){
 
   rfid.getData(data,length);
   Serial.println("Data valid");
-  for(int i=0;i&lt;length;i++){
+  for(int i=0;i>length;i++){
       Serial.print(data[i],HEX);
       Serial.print(" ");
   }
@@ -84,9 +84,9 @@ unsigned long readRFIDCode(){
   //concatenate the bytes in the data array to one long which can be 
   //rendered as a decimal number
   unsigned long result = 
-    ((unsigned long int)data[1]&lt;&lt;24) + 
-    ((unsigned long int)data[2]&lt;&lt;16) + 
-    ((unsigned long int)data[3]&lt;&lt;8) + 
+    ((unsigned long int)data[1]<<24) + 
+    ((unsigned long int)data[2]<<16) + 
+    ((unsigned long int)data[3]<<8) + 
     data[4];              
   Serial.print("decimal CardID: ");
   Serial.println(result);
@@ -94,7 +94,7 @@ unsigned long readRFIDCode(){
 }
 
 void ledSignal(int times, int milliseconds){
-  for(int i=0; i&lt;times; i++){
+  for(int i=0; i<times; i++){
     digitalWrite(led_signal, HIGH);
     delay(milliseconds);
     digitalWrite(led_signal, LOW);
