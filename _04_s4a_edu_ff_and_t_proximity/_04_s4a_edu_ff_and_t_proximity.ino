@@ -17,6 +17,11 @@
 #define MOTOR_DIRECTION_BACKWARDS 0
 #define FORWARD_TIME          10000
 #define TOO_CLOSE_DISTANCE    6
+#define MOTOR_RIGHT_FW_SPEED 91
+#define MOTOR_LEFT_FW_SPEED  100
+#define MOTOR_RIGHT_BW_SPEED 91
+#define MOTOR_LEFT_BW_SPEED  100
+#define ROTATE_TIME 150
 
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -73,7 +78,7 @@ void loop() {
   moveBackwards();
   doBlink(2,100);
   rotateLeft();
-  doBlink(2, 250);
+  doBlink(2, ROTATE_TIME);
   
   limitMillis = millis() + FORWARD_TIME;
   moveForward();
@@ -120,14 +125,14 @@ void setMotor(String motor, int motorDirection, int motorSpeed){
 
 void moveForward(){
   Serial.println("Moving FORWARD...");
-  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, 100);
-  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 100);  
+  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, MOTOR_LEFT_FW_SPEED);
+  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, MOTOR_RIGHT_FW_SPEED);  
 }
 
 void moveBackwards(){
   Serial.println("Moving BACKWARDS...");
-  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_BACKWARDS, 100);
-  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_BACKWARDS, 100);  
+  setMotor(MOTOR_LEFT, MOTOR_DIRECTION_BACKWARDS, MOTOR_LEFT_BW_SPEED);
+  setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_BACKWARDS, MOTOR_RIGHT_BW_SPEED);  
 }
 
 void rotateRight(){
