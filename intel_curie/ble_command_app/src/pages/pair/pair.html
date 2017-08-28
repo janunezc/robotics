@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>PAIR</ion-title>
+    <p>Acá podemos realizar una prueba de PAIRING con el TinyTILE</p>
+    <button ion-button [disabled]="ejecutandoComando" (click)="Command()">{{ComandoTXT}}</button>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list *ngIf="Devices!== undefined && Devices.length > 0 && OpMode == OpModes.LIST_DEVICES ">
+    <ion-list-header>
+      Devices {{ShowDevicesList}}
+    </ion-list-header>
+
+    <ion-item *ngFor="let device of Devices" (click) = "EditDevice(device)">
+      <ion-icon name="bluetooth" item-start color="primary"></ion-icon>
+      {{device.name}} ({{device.id}}) {{device.rssi}}
+    </ion-item>
+  </ion-list>
+
+  <ion-card *ngIf="OpMode == OpModes.EDIT_DEVICE">
+    <ion-card-header>
+      Pair a Device
+    </ion-card-header>
+    <ion-card-content >
+      DEVICE NAME: {{CurrentDevice.name}}<br/>
+      DEVICE ID: {{CurrentDevice.id}}
+    </ion-card-content>
+  </ion-card>
+  <ion-list>
+    <ion-list-header>
+      Histórico de Ejecución
+    </ion-list-header>
+    <ion-item *ngFor="let message of messages">
+      {{message}}
+    </ion-item>
+  </ion-list>
+</ion-content>
