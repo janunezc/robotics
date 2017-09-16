@@ -7,6 +7,7 @@
 #define board_led            13
 #define left_speed_pin        5
 #define right_speed_pin       6
+#define servo01_pin           9
 #define left_direction_pin   10
 #define right_direction_pin  11
 #define proximity_echo        2
@@ -23,6 +24,10 @@
 #define MOTOR_LEFT_BW_SPEED  100
 #define ROTATE_TIME 150
 
+#include <Servo.h>
+
+Servo servo1;
+
 // the setup function runs once when you press reset or power the board
 void setup() {
   // initialize digital pin 13 as an output.
@@ -38,6 +43,12 @@ void setup() {
   pinMode(left_direction_pin, OUTPUT);
   pinMode(right_direction_pin, OUTPUT);
 
+  pinMode(servo01_pin, OUTPUT);
+  servo1.attach(servo01_pin);
+  servo1.write(180);
+  delay(1000);
+  servo1.write(0);
+
   pinMode(proximity_trigger, OUTPUT);
   pinMode(proximity_echo, INPUT);
   
@@ -48,6 +59,8 @@ void setup() {
   delay(3000);
   rotateRight();
   doBlink(3, 500);
+
+  
   Serial.println("SETUP COMPLETE");
 }
 
@@ -124,29 +137,34 @@ void setMotor(String motor, int motorDirection, int motorSpeed){
 }
 
 void moveForward(){
+  servo1.write(90);
   Serial.println("Moving FORWARD...");
   setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, MOTOR_LEFT_FW_SPEED);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, MOTOR_RIGHT_FW_SPEED);  
 }
 
 void moveBackwards(){
+  servo1.write(90);
   Serial.println("Moving BACKWARDS...");
   setMotor(MOTOR_LEFT, MOTOR_DIRECTION_BACKWARDS, MOTOR_LEFT_BW_SPEED);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_BACKWARDS, MOTOR_RIGHT_BW_SPEED);  
 }
 
 void rotateRight(){
+  servo1.write(0);
   Serial.println("Rotating RIGHT...");
   setMotor(MOTOR_LEFT,  MOTOR_DIRECTION_FORWARD, 100);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_BACKWARDS, 100);  
 }
 void rotateLeft(){
+  servo1.write(180);
   Serial.println("Rotating LEFT...");
   setMotor(MOTOR_LEFT,  MOTOR_DIRECTION_BACKWARDS, 100);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 100);  
 }
 
 void stopMotors(){
+  servo1.write(90);
   Serial.println("STOPPING MOTORS...");
   setMotor(MOTOR_LEFT, MOTOR_DIRECTION_FORWARD, 0);
   setMotor(MOTOR_RIGHT, MOTOR_DIRECTION_FORWARD, 0);  

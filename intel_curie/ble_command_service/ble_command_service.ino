@@ -16,7 +16,7 @@ void setup() {
   BLE.begin(); //Inicializamos el sistema Bluetooth Low Energy (BLE) del Curie
   parpadear(2 ,100);//Señal de aviso de que la operación anterior fue exitosa
   
-  BLE.setLocalName("COMANDO LED"); //Definimos un nombre para publicitar nuestro dispositivo
+  BLE.setLocalName("demo_ble"); //Definimos un nombre para publicitar nuestro dispositivo
   BLE.setAdvertisedService(servicioBLE_Comandos);//Definimos el servicio que se va a publicitar
   servicioBLE_Comandos.addCharacteristic(caracteristicaBLE_Comandos); //Agregamos la característica al servicio
   BLE.addService(servicioBLE_Comandos); //Agregamos el servicio al dispositivo  
