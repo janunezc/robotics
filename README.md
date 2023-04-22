@@ -1,2 +1,2 @@
 # robotics
-My Opensource stuff for robotics
+My Opensource experiments and playgrouynd stuff for robotics
